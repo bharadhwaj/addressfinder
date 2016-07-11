@@ -1,7 +1,7 @@
 # ADDRESS FINDER #
 
 >This is a web page which could be used to find the address of any places in the  
-world. This is web pafedeveloped using maps from **Mapbox** API, **mapbox.js**  
+world. This is web page is developed using maps from **Mapbox** API, **mapbox.js**  
 v2.4.0 and with help of **Google Maps** API.  
 
 ## How to find address? ##
