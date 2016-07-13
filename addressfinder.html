@@ -5,6 +5,7 @@
   <link rel="shortcut icon" href="http://yoursmiles.org/ismile/globe/globe27.png">
   <title>Address Finder</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
   <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
   <style>
@@ -46,7 +47,7 @@
 <pre id='address' class='ui-box-right'></pre>
 
 <script>
-L.mapbox.accessToken = '<YOUR-MAPBOX-ACCESS-TOKEN-HERE';
+L.mapbox.accessToken = 'pk.eyJ1IjoiYmhhcmFkaHdhamNuIiwiYSI6ImNpcWNocHVzazAyMW1mdG5lM25xendndWcifQ.GsS0TB7VW4s8icX3zeUJJg';
 
 var map = L.mapbox.map('map', 'mapbox.streets')
     .setView([12.981095999730163, 77.63673841953278], 4);
@@ -74,7 +75,6 @@ function ondragend() {
     printAddress("Google"); // Calling function to retrieve the required address
     
 }
-
 function printAddress(str) {
   var m = marker.getLatLng(); // Getting Latitude and Longitude 
   if(m.lng < -180)
@@ -83,55 +83,39 @@ function printAddress(str) {
     var norm_lng = m.lng % 360;
   else
     var norm_lng = m.lng;
-  var google_url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+m.lat+","+norm_lng+"&key=<YOUR-GOOGLE-API-KEY-HERE>";
+  var google_url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+m.lat+","+norm_lng+"&key=AIzaSyBWfvRZYRAMKcJ0ZdLR6f0Yk2hEHweVQNc";
     // URL generation to get the Address JSON file from Google API
   var mapbox_url = "http://api.tiles.mapbox.com/v3/examples.map-zr0njcqy/geocode/"+norm_lng+","+m.lat+".json";
-  // URL generation to get the Address JSON file from Mapbox API
-  var httpReq = new XMLHttpRequest();
-  httpReq.onreadystatechange = function() {
-    if (httpReq.readyState == 4 && httpReq.status == 200) { 
-      if (str == "Google") {
-        var addressJson = String(httpReq.responseText);
-        var beginningIndex = addressJson.indexOf('"formatted_address"');
-        var endingIndex = addressJson.indexOf('"geometry"') - 12;
-        if (beginningIndex == -1) {
-          printAddress("Mapbox");
-        }
-        else {
-          var addressStr = "Address: " + addressJson.slice(beginningIndex+23, endingIndex);
-          address.innerHTML = addressStr;
-        }
-      }
-      else if (str == "Mapbox") {
-        var addressJson = String(httpReq.responseText);
+    // URL generation to get the Address JSON file from Mapbox API
+
+  $.getJSON(google_url, function (google_data) {
+    
+    var g_data = google_data;
+    if (g_data["status"] == "OK")
+      address.innerHTML = g_data["results"][0].formatted_address;
+
+    else {
+
+      $.getJSON(mapbox_url, function (mapbox_data) {
+
+        var m_data = mapbox_data;
         var addressStr = "Address: ";
-        var prevIndex = 0;
-        var beginningIndex = addressJson.indexOf('"name"', prevIndex);
-        var endingIndex = addressJson.indexOf('"type"', beginningIndex) - 2;
-        while (beginningIndex != -1){
-          beginningIndex = addressJson.indexOf('"name"', prevIndex);
-          endingIndex = addressJson.indexOf('"type"', beginningIndex) - 2;
-          prevIndex = beginningIndex+1;
-          if(beginningIndex != -1)
-            addressStr = addressStr + addressJson.slice(beginningIndex+8, endingIndex) + ", ";
-          else
-            addressStr = addressStr.slice(0, addressStr.length-2);
+
+        if (typeof m_data["results"][0][0] != 'undefined') {
+          var i;
+          for(i = 0; typeof m_data["results"][0][i] != 'undefined'; i = i+1)
+            addressStr = addressStr + m_data["results"][0][i]["name"] + ', '; 
+          addressStr.slice(0,addressStr.length-2);
         }
-        if (addressStr == "Address: ") 
-          addressStr = "Sorry! No address found for this location!";
+        else 
+          addressStr = "Sorry! No address found for this location!"
         address.innerHTML = addressStr;
-      }
+      });
+
     }
-  };
-  
-  if (str == "Google")
-    httpReq.open("GET", google_url, true);
-  else if(str = "Mapbox")
-    httpReq.open("GET", mapbox_url, true);
-  httpReq.send();
-} 
 
-
+});
+}
 
 </script>
 
