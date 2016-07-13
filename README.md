@@ -13,4 +13,16 @@ left of the page and the Address is shown in bottom right of the page.
 * Using mapbox.js API the latitude and longitude is obtained.
 * Using the coordinates, the JSON file for Google Maps API for that coordinates  
  is obtained.
-* From the JSON file required address is obtained.
+* If address is found using Google Maps API, it is displayed.
+* If Google Maps API can't detect any address, it passes the coordinates to  
+Mapbox API for searching address.
+* If address is found using Mapbox API, it is displayed.
+* If both APIs can't find address, then 'No address found for this location!'  
+is displayed.
+
+## Standard Examples for each test cases #
+* In order to obtain address from Google Maps API, see the address when page  
+is loaded.
+* To see address obtained through Mapbox API, drag the marker near to Leh,  
+Jammu & Kashmir, India.
+* To see 'No address found for this location!', drag the marker to any oceans.
