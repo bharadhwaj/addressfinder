@@ -7,7 +7,7 @@ v2.4.0 and with help of **Google Maps** API.
 ## How to use? ##
 > After making a copy of the repo, open the file **addressfinder.html** and add  
 your Mapbox Access token in line 48 and your Google Maps API key in line 85.  
-
+> Here is, [How to get a Google Key](https://developers.google.com/maps/documentation/javascript/get-api-key "Google Maps API Key") and [Creating a Mapbox Access token.](https://www.mapbox.com/help/create-api-access-token/ "Mapbox Access token")
 
 
 
@@ -16,7 +16,7 @@ your Mapbox Access token in line 48 and your Google Maps API key in line 85.
 found. The corresponding Longitude and Latitude is shown in a box on the bottom  
 left of the page and the Address is shown in bottom right of the page.  
 
-> Here is, [How to get a Google Key](https://developers.google.com/maps/documentation/javascript/get-api-key "Google Maps API Key") and [Creating a Mapbox Access token.](https://www.mapbox.com/help/create-api-access-token/ "Mapbox Access token")
+
 
 ## How it works? ##
 * Using mapbox.js API the latitude and longitude is obtained.
