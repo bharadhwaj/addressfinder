@@ -4,6 +4,13 @@
 world. This is web page is developed using maps from **Mapbox** API, **mapbox.js**  
 v2.4.0 and with help of **Google Maps** API.  
 
+## How to use? ##
+> After making a copy of the repo, open the file **addressfinder.html** and add  
+your Mapbox Access token in line 48 and your Google Maps API key in line 85.  
+
+
+
+
 ## How to find address? ##
 > It's simple, just move the marker to the point of which address needs to be  
 found. The corresponding Longitude and Latitude is shown in a box on the bottom  
