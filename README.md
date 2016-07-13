@@ -16,6 +16,8 @@ your Mapbox Access token in line 48 and your Google Maps API key in line 85.
 found. The corresponding Longitude and Latitude is shown in a box on the bottom  
 left of the page and the Address is shown in bottom right of the page.  
 
+> Here is, [How to get a Google Key](https://developers.google.com/maps/documentation/javascript/get-api-key "Google Maps API Key") and [Creating a Mapbox Access token.](https://www.mapbox.com/help/create-api-access-token/ "Mapbox Access token")
+
 ## How it works? ##
 * Using mapbox.js API the latitude and longitude is obtained.
 * Using the coordinates, the JSON file for Google Maps API for that coordinates  
