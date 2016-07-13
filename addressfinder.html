@@ -79,33 +79,73 @@ marker.on('dragend', ondragend);
 // Set the initial marker coordinate on load.
 ondragend();
 
+
 function ondragend() {
+
     var m = marker.getLatLng(); // Getting Latitude and Longitude
     coordinates.innerHTML = 'Latitude: ' + m.lat + '<br />Longitude: ' + m.lng; // Printing them
-    var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+m.lat+","+m.lng+"&key=AIzaSyBWfvRZYRAMKcJ0ZdLR6f0Yk2hEHweVQNc";
-    // URL generation to get the Address JSON file from Google API 
-    printAddress(url); // Calling function to retrieve the required address
-	  
+    printAddress("Google"); // Calling function to retrieve the required address
+    
 }
 
-function printAddress(url) {
+function printAddress(str) {
+  var m = marker.getLatLng(); // Getting Latitude and Longitude 
+  if(m.lng < -180)
+    var norm_lng = m.lng % 360 + 360;
+  else if(m.lng > 180)
+    var norm_lng = m.lng % 360;
+  else
+    var norm_lng = m.lng;
+  var google_url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+m.lat+","+norm_lng+"&key=AIzaSyBWfvRZYRAMKcJ0ZdLR6f0Yk2hEHweVQNc";
+    // URL generation to get the Address JSON file from Google API
+  var mapbox_url = "http://api.tiles.mapbox.com/v3/examples.map-zr0njcqy/geocode/"+norm_lng+","+m.lat+".json";
+  // URL generation to get the Address JSON file from Mapbox API
   var httpReq = new XMLHttpRequest();
   httpReq.onreadystatechange = function() {
-    if (httpReq.readyState == 4 && httpReq.status == 200) {
-      var addressJson = String(httpReq.responseText);
-      var beginningIndex = addressJson.indexOf('"formatted_address"') + 23;
-      var endingIndex = addressJson.indexOf('"geometry"') - 12;
-      if (beginningIndex == 22) // -1 + 23
-      	address.innerHTML = "Sorry! No address found for this location!"
-      else {
-      	var addressStr = addressJson.slice(beginningIndex, endingIndex);
-      	address.innerHTML = "Address: " + addressStr;
+    if (httpReq.readyState == 4 && httpReq.status == 200) { 
+      if (str == "Google") {
+        var addressJson = String(httpReq.responseText);
+        var beginningIndex = addressJson.indexOf('"formatted_address"');
+        var endingIndex = addressJson.indexOf('"geometry"') - 12;
+        if (beginningIndex == -1) {
+          printAddress("Mapbox");
+        }
+        else {
+          var addressStr = "Address: " + addressJson.slice(beginningIndex+23, endingIndex);
+          address.innerHTML = addressStr;
+        }
+      }
+      else if (str == "Mapbox") {
+        var addressJson = String(httpReq.responseText);
+        var addressStr = "Address: ";
+        var prevIndex = 0;
+        var beginningIndex = addressJson.indexOf('"name"', prevIndex);
+        var endingIndex = addressJson.indexOf('"type"', beginningIndex) - 2;
+        while (beginningIndex != -1){
+          beginningIndex = addressJson.indexOf('"name"', prevIndex);
+          endingIndex = addressJson.indexOf('"type"', beginningIndex) - 2;
+          prevIndex = beginningIndex+1;
+          if(beginningIndex != -1)
+            addressStr = addressStr + addressJson.slice(beginningIndex+8, endingIndex) + ", ";
+          else
+            addressStr = addressStr.slice(0, addressStr.length-2);
+        }
+        if (addressStr == "Address: ") 
+          addressStr = "Sorry! No address found for this location!";
+        address.innerHTML = addressStr;
       }
     }
   };
-  httpReq.open("GET", url, true);
+  
+  if (str == "Google")
+    httpReq.open("GET", google_url, true);
+  else if(str = "Mapbox")
+    httpReq.open("GET", mapbox_url, true);
   httpReq.send();
-}	
+} 
+
+
+
 </script>
 
 </body>
