@@ -47,7 +47,7 @@
 <pre id='address' class='ui-box-right'></pre>
 
 <script>
-L.mapbox.accessToken = 'pk.eyJ1IjoiYmhhcmFkaHdhamNuIiwiYSI6ImNpcWNocHVzazAyMW1mdG5lM25xendndWcifQ.GsS0TB7VW4s8icX3zeUJJg';
+L.mapbox.accessToken = '<MAPBOX-ACCESS-TOKEN-HERE>';
 
 var map = L.mapbox.map('map', 'mapbox.streets')
     .setView([12.981095999730163, 77.63673841953278], 4);
@@ -83,7 +83,7 @@ function printAddress(str) {
     var norm_lng = m.lng % 360;
   else
     var norm_lng = m.lng;
-  var google_url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+m.lat+","+norm_lng+"&key=AIzaSyBWfvRZYRAMKcJ0ZdLR6f0Yk2hEHweVQNc";
+  var google_url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+m.lat+","+norm_lng+"&key=<GOOGLE-AUTHENTICATION-KEY-HERE>";
     // URL generation to get the Address JSON file from Google API
   var mapbox_url = "https://api.tiles.mapbox.com/v3/examples.map-zr0njcqy/geocode/"+norm_lng+","+m.lat+".json";
     // URL generation to get the Address JSON file from Mapbox API
