@@ -85,7 +85,7 @@ function printAddress(str) {
     var norm_lng = m.lng;
   var google_url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+m.lat+","+norm_lng+"&key=AIzaSyBWfvRZYRAMKcJ0ZdLR6f0Yk2hEHweVQNc";
     // URL generation to get the Address JSON file from Google API
-  var mapbox_url = "http://api.tiles.mapbox.com/v3/examples.map-zr0njcqy/geocode/"+norm_lng+","+m.lat+".json";
+  var mapbox_url = "https://api.tiles.mapbox.com/v3/examples.map-zr0njcqy/geocode/"+norm_lng+","+m.lat+".json";
     // URL generation to get the Address JSON file from Mapbox API
 
   $.getJSON(google_url, function (google_data) {
@@ -105,7 +105,7 @@ function printAddress(str) {
           var i;
           for(i = 0; typeof m_data["results"][0][i] != 'undefined'; i = i+1)
             addressStr = addressStr + m_data["results"][0][i]["name"] + ', '; 
-          addressStr.slice(0,addressStr.length-2);
+          addressStr = addressStr.slice(0, addressStr.length-2);
         }
         else 
           addressStr = "Sorry! No address found for this location!"
